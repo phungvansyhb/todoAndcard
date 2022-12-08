@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+// .tooltip-wrapper .title {
+//     border-right: solid 50px transparent;
+//     border-left: solid 50px transparent;
+//     border-top: solid 50px #e15915;
+//     transform: translateX(-50%);
+//     position: absolute;
+//     z-index: -1;
+//     content: '';
+//     top: 100%;
+//     left: 50%;
+//     height: 0;
+//     width: 0;
+//     -webkit-transform: translateX(-50%);
+//     -moz-transform: translateX(-50%);
+//     -ms-transform: translateX(-50%);
+//     -o-transform: translateX(-50%);
+// }
+
+
+.tooltip-wrapper:hover {
+    :first-child {
+        display: block;
+    }
+}
+
+
+
+
+@layer components {
+    span .highlight{
+        @apply bg-pink-500
+    }
+    .box {
+        @apply rounded-xl p-4 max-h-[85vh];
+        background-color: #EBECF0;
+    }
+
+    .box-inside {
+        @apply flex flex-col gap-4 p-2 overflow-y-auto scroll-smooth;
+        height: calc(100% - 40px);
+    }
+
+    .todo-item {
+        @apply rounded-lg shadow p-3 cursor-pointer;
+        cursor: pointer;
+        background-color: #fff;
+    }
+
+    .btn-primary {
+        @apply bg-green-600 rounded-lg text-white px-8 py-1 font-bold
+    }
+
+    .btn-secondary {
+        @apply bg-gray-600 rounded-lg text-white px-8 py-1 font-bold
+    }
+}
