@@ -1,13 +1,14 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import CloseIcon from '../components/Icons/CloseIcon'
 
 type Props = {
     title?: string;
     children?: React.ReactNode;
     footer?: React.ReactNode;
     className?: string;
-    onOk: () => void;
-    onCancel: () => void;
+    onOk: (param: any) => unknown;
+    onCancel: (param: any) => unknown;
     isOpen: boolean;
 };
 
@@ -32,28 +33,29 @@ export default function Modal({
                     className="z-10 fixed top-0 left-0"
                 >
                     <div className="w-screen h-screen bg-slate-600 opacity-80 fixed z-0" />
-                    <div
-                        className={`bg-white rounded-md shadow z-10 p-6 ${className} w-[500px] min-h-[400px] 
-                        relative top-1/2 left-1/2 translate-x-1/2 translate-y-1/4`}
-                    >
-                        <button className="absolute top-2 right-4" onClick={onCancel}>
-                            x
-                        </button>
-                        <div className="font-bold text-xl">{title}</div>
-                        <hr />
-                        <div className="min-h-[320px]">{children}</div>
-                        <hr />
-                        <div className="mt-4">
-                            {footer || (
-                                <div className="flex justify-center gap-4">
-                                    <button className="btn-primary" onClick={onOk}>
-                                        OK
-                                    </button>
-                                    <button className="btn-secondary" onClick={onCancel}>
-                                        Cancel
-                                    </button>
-                                </div>
-                            )}
+                    <div className="w-screen h-screen flex justify-center items-center">
+                        <div
+                            className={`bg-white rounded-md shadow z-10 p-6 ${className} w-[500px] min-h-[400px] relative`}
+                        >
+                            <button className="absolute top-4 right-4" onClick={onCancel}>
+                                <CloseIcon/>
+                            </button>
+                            <div className="font-bold text-xl">{title}</div>
+                            <hr />
+                            <div className="min-h-[320px]">{children}</div>
+                            <hr />
+                            <div className="mt-4">
+                                {footer || (
+                                    <div className="flex justify-center gap-4">
+                                        <button className="btn-primary" onClick={onOk}>
+                                            OK
+                                        </button>
+                                        <button className="btn-secondary" onClick={onCancel}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </motion.div>

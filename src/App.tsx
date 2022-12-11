@@ -15,6 +15,10 @@ import {
 
 } from "react-sortable-hoc";
 import { CardAssign  } from "./typeDef/CardTodo";
+import ArchonIcon from "./components/ArchonIcon";
+import AddIcon from './components/Icons/AddIcon'
+import { Tooltip } from 'react-tooltip';
+import Modal from "./components/Modal";
 
 interface ISortableItem extends SortableElementProps {
     item: CardAssign;
@@ -59,6 +63,7 @@ const SortableList = SortableContainer<ISortableContainer>(
 function App() {
     const todoList = useSelector((state: RootState) => state.todoSlice.list);
     const [textSearch, setTextSearch] = useState<string>("");
+    const [showAddModal , setShowAddModal ] = useState<boolean>(false)
     const [_isPending, startTransition] = useTransition();
     const dispatch = useDispatch();
 
@@ -74,6 +79,10 @@ function App() {
         let newCollection: typeof todoList = [...todoList];
         newCollection[collection] = arrayMove(todoList[collection], oldIndex, newIndex);
         dispatch(updateList(newCollection));
+    }  
+    function handleAddTask({}:CardAssign){
+        //some code
+        setShowAddModal(false)
     }
 
     return (
@@ -92,6 +101,9 @@ function App() {
                 todoList={todoList}
                 searchKey={textSearch}
             />
+            <ArchonIcon icon={<AddIcon />} id='addTask' onClick={()=>setShowAddModal(true)}/>
+            <Tooltip anchorId="addTask" content='Thêm Task Mới'/>
+            <Modal isOpen={showAddModal} onCancel={()=>{setShowAddModal(false)}} onOk={handleAddTask}/>
         </div>
     );
 }
