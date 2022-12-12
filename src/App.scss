@@ -58,4 +58,19 @@
     .btn-secondary {
         @apply bg-gray-600 rounded-lg text-white px-8 py-1 font-bold
     }
+    input{
+        @apply border rounded-md px-3 py-1 w-full my-2 text-sm
+    }
+    select{
+        @apply border rounded-md px-3 py-1 w-full my-2 text-sm
+    }
+    select option{
+        @apply  rounded-md px-3 py-1 w-full my-2 text-sm 
+    }
+    .dropdown-wrapper{
+        @apply shadow top-11 left-0 border rounded-sm w-full z-20 bg-amber-100
+    }
+
+    
+  
 }

@@ -5,7 +5,7 @@ import { arrayTodo } from './dataStore'
 
 function formatTodoList(todoList: CardTodo[]): CardAssign[][] {
   const result = []
-  const listTmp: CardAssign[] = todoList.map(item => ({ ...item, userIds: [1,2,3] }))
+  const listTmp: CardAssign[] = todoList.map(item => ({ ...item, userIds: [1, 2, 3] }))
   for (const iterator of ['BACKLOG', 'INPROGRESS', 'DONE']) {
     result.push(listTmp.filter((item) => item.status === iterator))
   }
@@ -13,7 +13,8 @@ function formatTodoList(todoList: CardTodo[]): CardAssign[][] {
 }
 
 const initialState: { list: CardAssign[][] | [] } = {
-  list: formatTodoList(arrayTodo)
+  // list: formatTodoList(arrayTodo)
+  list: []
 }
 export const counterSlice = createSlice({
   name: 'todoSlice',
@@ -24,7 +25,14 @@ export const counterSlice = createSlice({
     },
 
     createTodo: (state, action: PayloadAction<CardAssign>) => {
-      // state = [...state , action.payload]
+      if (state.list.length === 0) state.list = [[action.payload]]
+      else {
+        state.list.forEach(iterator => {
+          if (iterator[0].status === "BACKLOG") {
+            iterator = [...iterator, action.payload]
+          }
+        })
+      }
     },
     editTodo: (state, action: PayloadAction<CardAssign>) => {
 

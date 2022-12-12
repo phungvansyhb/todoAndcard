@@ -8,7 +8,6 @@ import Avatar from "./Avatar";
 
 export default function TodoItem({
     id,
-    assign,
     content,
     createdAt,
     estimate,

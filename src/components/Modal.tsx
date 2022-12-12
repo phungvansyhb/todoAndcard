@@ -42,7 +42,7 @@ export default function Modal({
                             </button>
                             <div className="font-bold text-xl">{title}</div>
                             <hr />
-                            <div className="min-h-[320px]">{children}</div>
+                            <div className="min-h-[320px] p-4">{children}</div>
                             <hr />
                             <div className="mt-4">
                                 {footer || (

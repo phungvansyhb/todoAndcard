@@ -1,7 +1,7 @@
 import React, { useState, useTransition } from "react";
 import "./App.css";
 import "./App.scss";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store/store";
 import { updateList } from "./store/todoSlice";
@@ -12,13 +12,13 @@ import {
     arrayMove,
     SortableContainerProps,
     SortableElementProps,
-
 } from "react-sortable-hoc";
-import { CardAssign  } from "./typeDef/CardTodo";
+import { CardAssign } from "./typeDef/CardTodo";
 import ArchonIcon from "./components/ArchonIcon";
-import AddIcon from './components/Icons/AddIcon'
-import { Tooltip } from 'react-tooltip';
+import AddIcon from "./components/Icons/AddIcon";
+import { Tooltip } from "react-tooltip";
 import Modal from "./components/Modal";
+import FormAddTodo from "./components/FormAddTodo";
 
 interface ISortableItem extends SortableElementProps {
     item: CardAssign;
@@ -35,13 +35,17 @@ const SortableItem: React.ComponentClass<ISortableItem, any> = SortableElement(
     )
 );
 const SortableList = SortableContainer<ISortableContainer>(
-    ({ todoList, searchKey }: { todoList: CardAssign[][] , searchKey: string }) => {
+    ({ todoList, searchKey }: { todoList: CardAssign[][]; searchKey: string }) => {
         return (
             <div className="grid grid-cols-12 gap-8 p-8">
                 {todoList.map((iterator, parentIndex) => (
                     <div className="box col-span-4" key={parentIndex}>
                         <div className="font-semibold text-xl mb-2">
-                            {parentIndex === 0 ? "BACKLOG" : parentIndex === 1 ? "INPROGRESS" : "DONE"}
+                            {parentIndex === 0
+                                ? "BACKLOG"
+                                : parentIndex === 1
+                                ? "INPROGRESS"
+                                : "DONE"}
                         </div>
                         <div className="box-inside">
                             {iterator.map((item, childIndex) => (
@@ -63,7 +67,7 @@ const SortableList = SortableContainer<ISortableContainer>(
 function App() {
     const todoList = useSelector((state: RootState) => state.todoSlice.list);
     const [textSearch, setTextSearch] = useState<string>("");
-    const [showAddModal , setShowAddModal ] = useState<boolean>(false)
+    const [showAddModal, setShowAddModal] = useState<boolean>(false);
     const [_isPending, startTransition] = useTransition();
     const dispatch = useDispatch();
 
@@ -79,10 +83,10 @@ function App() {
         let newCollection: typeof todoList = [...todoList];
         newCollection[collection] = arrayMove(todoList[collection], oldIndex, newIndex);
         dispatch(updateList(newCollection));
-    }  
-    function handleAddTask({}:CardAssign){
+    }
+    function handleAddTask({}: CardAssign) {
         //some code
-        setShowAddModal(false)
+        setShowAddModal(false);
     }
 
     return (
@@ -101,9 +105,18 @@ function App() {
                 todoList={todoList}
                 searchKey={textSearch}
             />
-            <ArchonIcon icon={<AddIcon />} id='addTask' onClick={()=>setShowAddModal(true)}/>
-            <Tooltip anchorId="addTask" content='Thêm Task Mới'/>
-            <Modal isOpen={showAddModal} onCancel={()=>{setShowAddModal(false)}} onOk={handleAddTask}/>
+            <ArchonIcon icon={<AddIcon />} id="addTask" onClick={() => setShowAddModal(true)} />
+            <Tooltip anchorId="addTask" content="Thêm Task Mới" />
+            <Modal
+                isOpen={showAddModal}
+                onCancel={() => {
+                    setShowAddModal(false);
+                }}
+                onOk={handleAddTask}
+                footer={<></>}
+            >
+                <FormAddTodo onCancel={()=>setShowAddModal(false)} onSubmit={()=>setShowAddModal(false)}/>
+            </Modal>
         </div>
     );
 }
