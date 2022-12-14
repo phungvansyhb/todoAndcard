@@ -24,7 +24,11 @@ export default function Select<T extends SelectProps>({
     mode ='single',
     ...rest
 }: T) {
-    const [selected, setSelected] = useState<any>(() => {
+    const [selected, setSelected] = useState<any|any[]>(() => {
+        if(Array.isArray(defaultValue)){
+            /* TODO handle trường hợp multiple */
+            return 
+        }
         if (defaultValue) {
             return options.find((item) => item.value === defaultValue);
         }

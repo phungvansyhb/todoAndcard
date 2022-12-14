@@ -10,13 +10,15 @@ import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
 import { createTodo } from "../store/todoSlice";
 
+type FormInputs = Partial<Omit<CardAssign, "createdAt" | "id" | "status">>;
+
 type Props = {
     onCancel: (param?: any) => unknown;
     onSubmit: (param?: any) => unknown;
+    defaultValue? :FormInputs
 };
-type FormInputs = Partial<Omit<CardAssign, "createdAt" | "id" | "status">>;
 
-export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps }: Props) {
+export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps , defaultValue }: Props) {
     const {
         register,
         handleSubmit,
@@ -26,7 +28,7 @@ export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps }: Props
     } = useForm<FormInputs>({
         mode: "all",
         reValidateMode: "onChange",
-        defaultValues: {},
+        defaultValues: defaultValue,
         resolver: undefined,
         context: undefined,
         criteriaMode: "firstError",
@@ -75,7 +77,7 @@ export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps }: Props
                 setValue={setValue}
                 label="Trạng thái"
                 placeHolder="Chọn độ ưu tiên của thẻ"
-                defaultValue={1}
+                defaultValue={defaultValue?.priority}
                 options={[
                     {
                         title: (
@@ -110,6 +112,7 @@ export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps }: Props
                 mode='multiple'
                 label="Người đảm nhiệm"
                 placeHolder="Thẻ này sẽ do ai đảm nhiệm"
+                defaultValue={defaultValue?.userIds}
                 options={arrayUser.map((user, _index) => ({
                     title: (
                         <div className="flex gap-2">

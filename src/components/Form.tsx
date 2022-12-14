@@ -1,13 +1,10 @@
 import React from "react";
 import {useForm , UseFormHandleSubmit , SubmitHandler} from 'react-hook-form'
 
-
 type Props = {
-
     children: React.ReactElement | React.ReactElement[];
     useFormSubmit : UseFormHandleSubmit<any>;
     onSubmit: SubmitHandler<any>;
-    
 };
 
 export default function Form({ useFormSubmit, children, onSubmit }: Props) {

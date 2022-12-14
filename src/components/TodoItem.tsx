@@ -1,22 +1,20 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
-import type { CardAssign } from "../typeDef/CardTodo";
-import Modal from "./Modal";
-import ThreeDot from "./Icons/ThreeDot";
-import PriorityTag from "./PriorityTag";
+import { useLayoutEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import DeleteIcon from "../components/Icons/DeleteIcon";
+import EditIcon from "../components/Icons/EditIcon";
 import { arrayUser } from "../store/dataStore";
+import type { CardAssign } from "../typeDef/CardTodo";
 import Avatar from "./Avatar";
+import ThreeDot from "./Icons/ThreeDot";
+import Modal from "./Modal";
+import Popup from "./Popup";
+import PriorityTag from "./PriorityTag";
+import { deleteTodo, editTodo } from "../store/todoSlice";
+import FormAddTodo from "./FormAddTodo";
 
-export default function TodoItem({
-    id,
-    content,
-    createdAt,
-    estimate,
-    priority,
-    status,
-    title,
-    searchKey,
-    userIds,
-}: CardAssign & { searchKey: string }) {
+export default function TodoItem(props: CardAssign & { searchKey: string }) {
+    const { id, content, createdAt, estimate, priority, status, title, searchKey, userIds } = props;
+    const dispath = useDispatch();
     const [open, setOpen] = useState<boolean>(false);
     const titleRef = useRef<HTMLParagraphElement>(null);
     useLayoutEffect(() => {
@@ -44,7 +42,26 @@ export default function TodoItem({
                         {title}
                     </p>
                     <button>
-                        <ThreeDot />
+                        <Popup
+                            popUpContent={
+                                <div className="flex flex-col">
+                                    <div
+                                        className="flex justify-between items-center hover:bg-slate-300 py-2 px-3"
+                                        onClick={() => setOpen(true)}
+                                    >
+                                        Edit <EditIcon height="16px" width="16px" />
+                                    </div>
+                                    <div
+                                        className="flex gap-4 items-center justify-between hover:bg-slate-300 py-2 px-3"
+                                        onClick={() => dispath(deleteTodo(props))}
+                                    >
+                                        Delete <DeleteIcon height="16px" width="16px" />
+                                    </div>
+                                </div>
+                            }
+                        >
+                            <ThreeDot />
+                        </Popup>
                     </button>
                 </div>
                 <br />
@@ -65,7 +82,10 @@ export default function TodoItem({
                 onCancel={() => setOpen(false)}
                 onOk={() => setOpen(false)}
                 title={title}
-            ></Modal>
+                footer={<></>}
+            >
+                <FormAddTodo defaultValue={props} onCancel={()=>setOpen(false)} onSubmit={()=>setOpen(false)}/>
+            </Modal>
         </div>
     );
 }

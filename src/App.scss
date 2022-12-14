@@ -70,6 +70,10 @@
     .dropdown-wrapper{
         @apply shadow top-11 left-0 border rounded-sm w-full z-20 bg-amber-100
     }
+    .popup-container:hover .popup-content{
+         display: block;
+        
+    }
 
     
   

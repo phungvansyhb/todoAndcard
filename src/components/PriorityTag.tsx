@@ -3,6 +3,7 @@ import BlockIcon from "./Icons/Block";
 import PriorityFirst from "./Icons/PriorityFirst";
 import PrioritySecond from "./Icons/PrioritySecond";
 import { Tooltip } from 'react-tooltip';
+import type {STATUS} from '../typeDef/CardTodo'
 
 type Props = {
     level: 1 | 2 | 3;

@@ -5,10 +5,10 @@ import CloseIcon from '../components/Icons/CloseIcon'
 type Props = {
     title?: string;
     children?: React.ReactNode;
-    footer?: React.ReactNode;
     className?: string;
-    onOk: (param: any) => unknown;
-    onCancel: (param: any) => unknown;
+    footer?: React.ReactNode;
+    onOk?: (param: any) => unknown;
+    onCancel?: (param: any) => unknown;
     isOpen: boolean;
 };
 

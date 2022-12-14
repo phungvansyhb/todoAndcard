@@ -19,13 +19,14 @@ import AddIcon from "./components/Icons/AddIcon";
 import { Tooltip } from "react-tooltip";
 import Modal from "./components/Modal";
 import FormAddTodo from "./components/FormAddTodo";
+import { PRIORITY, STATUS, TODOSTATE } from "./typeDef/CardTodo";
 
 interface ISortableItem extends SortableElementProps {
     item: CardAssign;
     searchKey: string;
 }
 interface ISortableContainer extends SortableContainerProps {
-    todoList: CardAssign[][];
+    todoList: TODOSTATE;
     searchKey: string;
 }
 
@@ -35,20 +36,14 @@ const SortableItem: React.ComponentClass<ISortableItem, any> = SortableElement(
     )
 );
 const SortableList = SortableContainer<ISortableContainer>(
-    ({ todoList, searchKey }: { todoList: CardAssign[][]; searchKey: string }) => {
+    ({ todoList, searchKey }: { todoList: TODOSTATE; searchKey: string }) => {
         return (
             <div className="grid grid-cols-12 gap-8 p-8">
-                {todoList.map((iterator, parentIndex) => (
+                {Object.keys(todoList).map((key, parentIndex) => (
                     <div className="box col-span-4" key={parentIndex}>
-                        <div className="font-semibold text-xl mb-2">
-                            {parentIndex === 0
-                                ? "BACKLOG"
-                                : parentIndex === 1
-                                ? "INPROGRESS"
-                                : "DONE"}
-                        </div>
+                        <div className="font-semibold text-xl mb-2">{key}</div>
                         <div className="box-inside">
-                            {iterator.map((item, childIndex) => (
+                            {todoList[key as keyof TODOSTATE].map((item, childIndex) => (
                                 <SortableItem
                                     index={childIndex}
                                     key={`item-${childIndex}`}
@@ -79,11 +74,7 @@ function App() {
         oldIndex: number;
         newIndex: number;
         collection: any;
-    }) {
-        let newCollection: typeof todoList = [...todoList];
-        newCollection[collection] = arrayMove(todoList[collection], oldIndex, newIndex);
-        dispatch(updateList(newCollection));
-    }
+    }) {}
     function handleAddTask({}: CardAssign) {
         //some code
         setShowAddModal(false);
@@ -99,12 +90,24 @@ function App() {
                 />
             </div>
 
-            <SortableList
+            {/*   <SortableList
                 onSortEnd={onSortEnd}
                 lockAxis="y"
                 todoList={todoList}
                 searchKey={textSearch}
-            />
+            /> */}
+            <div className="grid grid-cols-12 gap-8 p-8">
+                {Object.keys(todoList).map((key, parentIndex) => (
+                    <div className="box col-span-4" key={parentIndex}>
+                        <div className="font-semibold text-xl mb-2">{key}</div>
+                        <div className="box-inside">
+                            {todoList[key as keyof TODOSTATE].map((item, childIndex) => (
+                                <TodoItem {...item} searchKey={textSearch} />
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
             <ArchonIcon icon={<AddIcon />} id="addTask" onClick={() => setShowAddModal(true)} />
             <Tooltip anchorId="addTask" content="Thêm Task Mới" />
             <Modal
@@ -115,7 +118,10 @@ function App() {
                 onOk={handleAddTask}
                 footer={<></>}
             >
-                <FormAddTodo onCancel={()=>setShowAddModal(false)} onSubmit={()=>setShowAddModal(false)}/>
+                <FormAddTodo
+                    onCancel={() => setShowAddModal(false)}
+                    onSubmit={() => setShowAddModal(false)}
+                />
             </Modal>
         </div>
     );
