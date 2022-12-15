@@ -1,7 +1,7 @@
 export enum STATUS {
-  BACKLOG = "BACKLOG",
-  INPROGRESS="INPROGRESS" ,
-  DONE = "DONE"
+  BACKLOG = 1,
+  INPROGRESS=2 ,
+  DONE = 3
 }
 export enum PRIORITY  {
   MEDIUM = 1,
@@ -22,5 +22,5 @@ export interface CardTodo {
     createdAt : string,
   }
 export interface CardAssign extends CardTodo {
-    userIds : number[]|string[]
+    userIds : number
 }

@@ -2,8 +2,9 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import DeleteIcon from "../components/Icons/DeleteIcon";
 import EditIcon from "../components/Icons/EditIcon";
+import NextStateIcon from "../components/Icons/NextStateIcon";
 import { arrayUser } from "../store/dataStore";
-import type { CardAssign } from "../typeDef/CardTodo";
+import { CardAssign, STATUS } from "../typeDef/CardTodo";
 import Avatar from "./Avatar";
 import ThreeDot from "./Icons/ThreeDot";
 import Modal from "./Modal";
@@ -11,6 +12,7 @@ import Popup from "./Popup";
 import PriorityTag from "./PriorityTag";
 import { deleteTodo, editTodo } from "../store/todoSlice";
 import FormAddTodo from "./FormAddTodo";
+import { User } from "../typeDef/User";
 
 export default function TodoItem(props: CardAssign & { searchKey: string }) {
     const { id, content, createdAt, estimate, priority, status, title, searchKey, userIds } = props;
@@ -30,7 +32,11 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
             }
         }
     }, [searchKey]);
-    const listAssignedUser = arrayUser.filter((user) => userIds.some((id) => id === user.id));
+    const assignedUser = arrayUser.find((user) => userIds === user.id);
+    function handleChangeStatus(item: CardAssign, type: "UP" | "DOWN") {
+        const newStatus = type === 'UP' ? STATUS[STATUS[item.status]+1] : STATUS[STATUS[item.status]-1]  
+        dispath(editTodo({...item , status : newStatus as "BACKLOG" | "INPROGRESS" | "DONE"}))
+    }
     return (
         <div>
             <div className="todo-item hover:bg-yellow-100">
@@ -44,7 +50,7 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
                     <button>
                         <Popup
                             popUpContent={
-                                <div className="flex flex-col">
+                                <div className="flex flex-col w-48">
                                     <div
                                         className="flex justify-between items-center hover:bg-slate-300 py-2 px-3"
                                         onClick={() => setOpen(true)}
@@ -57,6 +63,27 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
                                     >
                                         Delete <DeleteIcon height="16px" width="16px" />
                                     </div>
+                                    {status !== "DONE" && (
+                                        <div
+                                            className="flex gap-4 items-center justify-between hover:bg-slate-300 py-2 px-3"
+                                            onClick={() => handleChangeStatus(props , "UP")}
+                                        >
+                                            Up State <NextStateIcon height="16px" width="16px" />
+                                        </div>
+                                    )}
+                                    {status !== "BACKLOG" && (
+                                        <div
+                                            className="flex gap-4 items-center justify-between hover:bg-slate-300 py-2 px-3"
+                                            onClick={() => handleChangeStatus(props , "DOWN")}
+                                        >
+                                            Down State{" "}
+                                            <NextStateIcon
+                                                height="16px"
+                                                width="16px"
+                                                className="rotate-180"
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             }
                         >
@@ -69,9 +96,7 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
                     <div className="flex gap-4 item-center">
                         <span className="font-bold text-blue-600">{`Task ${id}`}</span>
                         <div className="flex gap-2">
-                            {listAssignedUser.map((user) => (
-                                <Avatar {...user} />
-                            ))}
+                            <Avatar {...(assignedUser as User)} />
                         </div>
                     </div>
                     <PriorityTag level={priority} />
@@ -81,10 +106,14 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
                 isOpen={open}
                 onCancel={() => setOpen(false)}
                 onOk={() => setOpen(false)}
-                title={title}
+                title={`Task ${id}`}
                 footer={<></>}
             >
-                <FormAddTodo defaultValue={props} onCancel={()=>setOpen(false)} onSubmit={()=>setOpen(false)}/>
+                <FormAddTodo
+                    defaultValue={props}
+                    onCancel={() => setOpen(false)}
+                    onSubmit={() => setOpen(false)}
+                />
             </Modal>
         </div>
     );

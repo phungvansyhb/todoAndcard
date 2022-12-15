@@ -24,11 +24,11 @@ export default function Select<T extends SelectProps>({
     mode ='single',
     ...rest
 }: T) {
-    const [selected, setSelected] = useState<any|any[]>(() => {
-        if(Array.isArray(defaultValue)){
-            /* TODO handle trường hợp multiple */
-            return 
-        }
+    const [selected, setSelected] = useState<any>(() => {
+        // if(Array.isArray(defaultValue)){
+        //     /* TODO handle trường hợp multiple */
+        //     return options.filter(item=> defaultValue.some(value=>value=== item.value)) 
+        // }
         if (defaultValue) {
             return options.find((item) => item.value === defaultValue);
         }
@@ -41,7 +41,7 @@ export default function Select<T extends SelectProps>({
         setSelected(value);
     }
     useEffect(()=>{
-        if(defaultValue) setValue(name , [defaultValue])
+        if(defaultValue) setValue(name , defaultValue)
     },[])
 
     return (
@@ -76,7 +76,7 @@ export default function Select<T extends SelectProps>({
                             key={index}
                             onClick={() => {
                                 handleClickOption(item);
-                                setValue(name,[item.value])
+                                setValue(name,item.value)
                             }}
                             className="dropdown-item p-2 hover:bg-orange-200 cursor-pointer flex text-sm w-full"
                         >

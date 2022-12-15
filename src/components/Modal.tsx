@@ -30,12 +30,12 @@ export default function Modal({
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     transition={{ type: "spring" }}
-                    className="z-10 fixed top-0 left-0"
+                    className="fixed top-0 left-0 z-20"
                 >
-                    <div className="w-screen h-screen bg-slate-600 opacity-80 fixed z-0" />
-                    <div className="w-screen h-screen flex justify-center items-center">
+                    <div className="w-screen h-screen bg-slate-600 opacity-80 fixed z-10" />
+                    <div className="w-screen h-screen flex justify-center items-center z-20">
                         <div
-                            className={`bg-white rounded-md shadow z-10 p-6 ${className} w-[500px] min-h-[400px] relative`}
+                            className={`bg-white rounded-md shadow z-20 p-6 ${className} w-[500px] min-h-[400px] relative`}
                         >
                             <button className="absolute top-4 right-4" onClick={onCancel}>
                                 <CloseIcon/>

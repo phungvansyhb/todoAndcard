@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { CardTodo, CardAssign, TODOSTATE } from '../typeDef/CardTodo'
-import { arrayTodo } from './dataStore'
+import { arrayTodo, arrayUser } from './dataStore'
 
-function formatTodoList(todoList: CardTodo[]): TODOSTATE {
+function formatTodoList(todoList: CardTodo[] | CardAssign[]): TODOSTATE {
   const result: TODOSTATE = { 'BACKLOG': [], "INPROGRESS": [], "DONE": [] }
-  const listTmp: CardAssign[] = todoList.map(item => ({ ...item, userIds: [1, 2, 3] }))
+  let temp = [...todoList]
+  if (!("userIds" in temp[0])) {
+    temp = temp.map(item => ({ ...item, userIds: Math.round(Math.random() * arrayUser.length) }))
+  }
   for (const iterator of ['BACKLOG', 'INPROGRESS', 'DONE']) {
-    result[iterator as 'BACKLOG' | 'INPROGRESS' | 'DONE'] = listTmp.filter((item) => item.status === iterator)
+    result[iterator as 'BACKLOG' | 'INPROGRESS' | 'DONE'] = (temp as CardAssign[]).filter((item) => item.status === iterator)
   }
   return result;
 }
@@ -24,16 +27,19 @@ export const counterSlice = createSlice({
     },
 
     createTodo: (state, action: PayloadAction<CardAssign>) => {
-      const status = action.payload.status
-      state.list = { ...state.list, [status]: [action.payload, ...state.list[status]] }
+      const temp = Object.values(state.list).flatMap(item => item)
+      state.list = formatTodoList([action.payload, ...temp])
     },
     editTodo: (state, action: PayloadAction<CardAssign>) => {
-      const status = action.payload.status
-      const updateItemIndex = state.list[status].findIndex(item => item.id === action.payload.id)
-      state.list[status][updateItemIndex] = action.payload
+      const temp = Object.values(state.list).flatMap(item => item).map(item => {
+        if (item.id === action.payload.id) return action.payload
+        else return item
+      })
+      state.list = formatTodoList([...temp])
+
     },
     deleteTodo: (state, action: PayloadAction<CardAssign>) => {
-      const status = action.payload.status
+      const status = action.payload.status 
       state.list[status] = state.list[status].filter(item => item.id !== action.payload.id)
     }
   },

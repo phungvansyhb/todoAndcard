@@ -102,7 +102,7 @@ function App() {
                         <div className="font-semibold text-xl mb-2">{key}</div>
                         <div className="box-inside">
                             {todoList[key as keyof TODOSTATE].map((item, childIndex) => (
-                                <TodoItem {...item} searchKey={textSearch} />
+                                <TodoItem {...item} searchKey={textSearch} key={childIndex}/>
                             ))}
                         </div>
                     </div>

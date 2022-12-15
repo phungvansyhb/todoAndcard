@@ -8,17 +8,22 @@ import PriorityTag from "./PriorityTag";
 import { arrayUser } from "../store/dataStore";
 import Avatar from "./Avatar";
 import { useDispatch } from "react-redux";
-import { createTodo } from "../store/todoSlice";
+import { createTodo, editTodo } from "../store/todoSlice";
 
 type FormInputs = Partial<Omit<CardAssign, "createdAt" | "id" | "status">>;
 
 type Props = {
     onCancel: (param?: any) => unknown;
     onSubmit: (param?: any) => unknown;
-    defaultValue? :FormInputs
+    defaultValue?: CardAssign;
 };
 
-export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps , defaultValue }: Props) {
+export default function FormAddTodo<T extends Props>({
+    onCancel,
+    onSubmit: onSubmitProps,
+    defaultValue,
+    ...props
+}: T) {
     const {
         register,
         handleSubmit,
@@ -39,19 +44,34 @@ export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps , defaul
     const dispatch = useDispatch();
     const idGenerate = useId();
     function onSubmit(data: FormInputs) {
-        const submitObj: CardAssign = {
-            ...data,
-            createdAt: new Date().toString(),
-            status: "BACKLOG",
-            estimate: "1day",
-            id: idGenerate,
-            userIds: data.userIds || [],
-            title : data.title || '',
-            content : data.content || '',
-            priority : data.priority || 1
-        };
-        dispatch(createTodo(submitObj));
-        onSubmitProps()
+        if (defaultValue) {
+            let submitObj: CardAssign = {
+                ...data,
+                createdAt: new Date().toString(),
+                status: defaultValue.status,
+                estimate: defaultValue.estimate,
+                id: defaultValue.id,
+                userIds: data.userIds || defaultValue.userIds,
+                title: data.title || defaultValue.title,
+                content: data.content || defaultValue.content,
+                priority: data.priority || defaultValue.priority,
+            };
+            dispatch(editTodo(submitObj));
+        } else {
+            let submitObj: CardAssign = {
+                ...data,
+                createdAt: new Date().toString(),
+                status: "BACKLOG",
+                estimate: "1day",
+                id: idGenerate,
+                userIds: data.userIds || 1,
+                title: data.title || "",
+                content: data.content || "",
+                priority: data.priority || 1,
+            };
+            dispatch(createTodo(submitObj));
+        }
+        onSubmitProps();
     }
     return (
         <Form onSubmit={onSubmit} useFormSubmit={handleSubmit}>
@@ -109,7 +129,7 @@ export default function FormAddTodo({ onCancel, onSubmit: onSubmitProps , defaul
                 name="userIds"
                 register={register}
                 setValue={setValue}
-                mode='multiple'
+                mode="multiple"
                 label="Người đảm nhiệm"
                 placeHolder="Thẻ này sẽ do ai đảm nhiệm"
                 defaultValue={defaultValue?.userIds}
