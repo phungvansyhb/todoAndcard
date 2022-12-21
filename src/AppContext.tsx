@@ -1,23 +1,21 @@
-import React from "react";
 import { useQuery } from "react-query";
-import type { Animals } from "./typeDef/Animals";
-import animalService from "./services/animal.service";
+import ErrorPage from "./ErrorPage";
 import Gallery from "./components/Gallery";
 import Loading from "./components/Loading";
-import ErrorPage from "./ErrorPage";
+import animalService from "./services/animal.service";
 type Props = {};
 
 export default function AppContext({}: Props) {
-    const { data , isLoading,isFetching , status, error } = useQuery(
+    const { data, isLoading, isFetching, status, error } = useQuery(
         ["getAnimals"],
         () => animalService.apiGetAll({ page: 1, limit: 8 }),
         {
-            initialData : {data : [] , count : 69},
-            staleTime : 1000
+            initialData: { data: [], count: 69 },
+            staleTime: 1000,
         }
     );
-    console.log(isLoading , isFetching , status);
-    
+    console.log(isLoading, isFetching, status);
+
     if (isLoading)
         return (
             <div className="w-screen h-screen flex justify-center items-center overflow-hidden">

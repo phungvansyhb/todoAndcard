@@ -9,11 +9,12 @@ import { Card, CardHolder } from "./Card";
 
 type Props<T extends { id: number | string; avatar: string }> = {
     list: T[];
+    scrollPosition: { x: number; y: number };
     // layoutColNumber?:string,
 };
 
 function Gallery<T extends { id: number | string; avatar: string }>(prop: Props<T>) {
-    const { list } = prop;
+    const { list, scrollPosition } = prop;
     return (
         <div className={`grid grid-cols-4 gap-4 px-8`}>
             {list.map((item, index) => (
@@ -21,8 +22,8 @@ function Gallery<T extends { id: number | string; avatar: string }>(prop: Props<
                     children={<Card {...item} avatar={item.avatar} className="col-span-1" />}
                     key={index}
                     placeholder={<CardHolder />}
-                    afterLoad={()=>console.log('function loaded')}
-                    
+                    afterLoad={() => console.log("function loaded")}
+                    scrollPosition={scrollPosition}
                 />
             ))}
         </div>
