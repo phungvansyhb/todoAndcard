@@ -6,7 +6,7 @@ const ApiUrl = import.meta.env.VITE_APP_API_URL
 import {toast} from 'react-hot-toast'
 
 export class BaseService {
-    axiosInstance = axios.create()
+    axiosInstance = axios
     constructor(baseUrl?: string, timeOut?: number) {
         this.axiosInstance.defaults.baseURL = ApiUrl
         if (timeOut) {
@@ -20,8 +20,11 @@ export class BaseService {
             return Promise.reject(error);
         })
     };
-    apiGet<T>(endpoint: string, parameter?: QueryConfig) {
+    apiPaginate<T>(endpoint: string, parameter?: QueryConfig) {
         return axios.get(endpoint, { params: parameter }) as Promise<{data: T[] , count:number}>
+    }
+    apiGet<T>(endpoint: string, parameter?: QueryConfig) {
+        return axios.get(endpoint, { params: parameter }) as Promise<T[]>
     }
     apiPost(endpoint: string, body: any, config?: AxiosRequestConfig) {
         return axios.post(endpoint, body, config)
