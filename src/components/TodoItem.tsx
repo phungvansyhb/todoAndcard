@@ -94,7 +94,8 @@ export default function TodoItem(props: CardAssign & { searchKey: string }) {
                 <br />
                 <div className="flex justify-between items-center">
                     <div className="flex gap-4 item-center">
-                        <span className="font-bold text-blue-600">{`Task ${id}`}</span>
+                        <span className="font-bold text-blue-600">{`${id.toString().replaceAll(':','')}`}</span>
+
                         <div className="flex gap-2">
                             <Avatar {...(assignedUser as User)} />
                         </div>

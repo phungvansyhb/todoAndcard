@@ -36,7 +36,7 @@
         @apply bg-pink-500
     }
     .box {
-        @apply rounded-xl p-4 max-h-[85vh];
+        @apply rounded-xl p-4 max-h-[85vh] min-h-[150px];
         background-color: #EBECF0;
     }
 

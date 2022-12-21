@@ -1,63 +1,16 @@
-import React, { useState, useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import "./App.css";
 import "./App.scss";
-import "react-tooltip/dist/react-tooltip.css";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "./store/store";
-import { updateList } from "./store/todoSlice";
-import TodoItem from "./components/TodoItem";
-import {
-    SortableContainer,
-    SortableElement,
-    arrayMove,
-    SortableContainerProps,
-    SortableElementProps,
-} from "react-sortable-hoc";
-import { CardAssign } from "./typeDef/CardTodo";
 import ArchonIcon from "./components/ArchonIcon";
-import AddIcon from "./components/Icons/AddIcon";
-import { Tooltip } from "react-tooltip";
-import Modal from "./components/Modal";
 import FormAddTodo from "./components/FormAddTodo";
-import { PRIORITY, STATUS, TODOSTATE } from "./typeDef/CardTodo";
-
-interface ISortableItem extends SortableElementProps {
-    item: CardAssign;
-    searchKey: string;
-}
-interface ISortableContainer extends SortableContainerProps {
-    todoList: TODOSTATE;
-    searchKey: string;
-}
-
-const SortableItem: React.ComponentClass<ISortableItem, any> = SortableElement(
-    ({ item, searchKey }: { item: CardAssign; searchKey: string }) => (
-        <TodoItem {...item} searchKey={searchKey} />
-    )
-);
-const SortableList = SortableContainer<ISortableContainer>(
-    ({ todoList, searchKey }: { todoList: TODOSTATE; searchKey: string }) => {
-        return (
-            <div className="grid grid-cols-12 gap-8 p-8">
-                {Object.keys(todoList).map((key, parentIndex) => (
-                    <div className="box col-span-4" key={parentIndex}>
-                        <div className="font-semibold text-xl mb-2">{key}</div>
-                        <div className="box-inside">
-                            {todoList[key as keyof TODOSTATE].map((item, childIndex) => (
-                                <SortableItem
-                                    index={childIndex}
-                                    key={`item-${childIndex}`}
-                                    item={item}
-                                    searchKey={searchKey}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-    }
-);
+import AddIcon from "./components/Icons/AddIcon";
+import Modal from "./components/Modal";
+import TodoItem from "./components/TodoItem";
+import { RootState } from "./store/store";
+import { CardAssign, TODOSTATE } from "./typeDef/CardTodo";
 
 function App() {
     const todoList = useSelector((state: RootState) => state.todoSlice.list);
@@ -66,15 +19,6 @@ function App() {
     const [_isPending, startTransition] = useTransition();
     const dispatch = useDispatch();
 
-    function onSortEnd({
-        oldIndex,
-        newIndex,
-        collection,
-    }: {
-        oldIndex: number;
-        newIndex: number;
-        collection: any;
-    }) {}
     function handleAddTask({}: CardAssign) {
         //some code
         setShowAddModal(false);
@@ -89,20 +33,13 @@ function App() {
                     onChange={(e) => startTransition(() => setTextSearch(e.target.value))}
                 />
             </div>
-
-            {/*   <SortableList
-                onSortEnd={onSortEnd}
-                lockAxis="y"
-                todoList={todoList}
-                searchKey={textSearch}
-            /> */}
             <div className="grid grid-cols-12 gap-8 p-8">
                 {Object.keys(todoList).map((key, parentIndex) => (
                     <div className="box col-span-4" key={parentIndex}>
                         <div className="font-semibold text-xl mb-2">{key}</div>
                         <div className="box-inside">
                             {todoList[key as keyof TODOSTATE].map((item, childIndex) => (
-                                <TodoItem {...item} searchKey={textSearch} key={childIndex}/>
+                                <TodoItem {...item} searchKey={textSearch} key={childIndex} />
                             ))}
                         </div>
                     </div>

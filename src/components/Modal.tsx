@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDom from 'react-dom'
 import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from '../components/Icons/CloseIcon'
 
@@ -21,7 +22,7 @@ export default function Modal({
     onOk,
     isOpen,
 }: Props) {
-    return (
+    return ReactDom.createPortal(
         <AnimatePresence>
             {isOpen ? (
                 <motion.div
@@ -62,6 +63,6 @@ export default function Modal({
             ) : (
                 <></>
             )}
-        </AnimatePresence>
+        </AnimatePresence> , document.querySelector('body')!
     );
 }
