@@ -1,5 +1,5 @@
 import React from "react";
-import BlockIcon from './components/Icons/Block'
+import BlockIcon from '../components/Icons/Block'
 import { Link } from "react-router-dom";
 type Props = {};
 

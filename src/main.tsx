@@ -8,7 +8,7 @@ import {ReactQueryDevtools} from 'react-query/devtools'
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./AppRouter";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "./screens/ErrorPage";
 import { store } from "./store/store";
 
 const queryClient = new QueryClient();

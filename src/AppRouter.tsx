@@ -1,12 +1,16 @@
 import { Link, Route, Routes } from "react-router-dom";
-import App from "./TodoApp";
-import AppContext from "./CardApp";
-import PageNotFound from "./PageNotFound";
+import App from "./screens/TodoApp";
+import CardApp from "./screens/CardApp";
+import PageNotFound from "./screens/PageNotFound";
 import { Toaster } from "react-hot-toast";
 import { NavLink } from "react-router-dom";
+import CardDetail from "screens/CardDetail";
+import { AnimatePresence } from "framer-motion";
+import {useLocation} from 'react-router-dom'
 type Props = {};
 
 export default function AppRouter({}: Props) {
+    const location = useLocation()
     return (
         <div>
             <div className="shadow flex justify-end border-b gap-6 py-4 px-8 font-semibold sticky top-0 bg-white z-50">
@@ -19,7 +23,7 @@ export default function AppRouter({}: Props) {
                     Todo App
                 </NavLink>
                 <NavLink
-                    to={"/context"}
+                    to={"/card"}
                     className={(props) => {
                         return props.isActive ? "scale-110 text-pink-700 nav-link-active" : "";
                     }}
@@ -27,11 +31,15 @@ export default function AppRouter({}: Props) {
                     Card App
                 </NavLink>
             </div>
-            <Routes>
-                <Route path="/context" element={<AppContext />} />
-                <Route path="/" element={<App />} />
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
+            <AnimatePresence >
+                <Routes location={location} key={location.pathname}>
+                    <Route path="/card" element={<CardApp />} />
+                    <Route path="/card/:id" element={<CardDetail />} />
+                    <Route path="/" element={<App />} />
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            </AnimatePresence>
+
             <Toaster position="top-right" />
         </div>
     );

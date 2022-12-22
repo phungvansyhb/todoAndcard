@@ -1,5 +1,4 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { RegisterOptions } from "react-hook-form";
 
 export type InputProps = {
@@ -9,9 +8,9 @@ export type InputProps = {
     validateOption?: RegisterOptions;
     register: Function;
     errorsMsg?: string;
-    placeHolder?:string;
-    defaultValue?:any
-}
+    placeHolder?: string;
+    defaultValue?: any;
+};
 
 export default function Input<T extends InputProps>({
     register,
@@ -24,10 +23,22 @@ export default function Input<T extends InputProps>({
     defaultValue,
     ...rest
 }: T) {
+    const isRequired = validateOption?.required;
     return (
         <>
-            {label && <label htmlFor={name}>{label}</label>}
-            <input type={inputType} id={name} {...register(name, validateOption)} placeholder={placeHolder} defaultValue={defaultValue} {...rest} />
+            {label && (
+                <label htmlFor={name} className={isRequired ? "required" : ""}>
+                    {label}
+                </label>
+            )}
+            <input
+                type={inputType}
+                id={name}
+                {...register(name, validateOption)}
+                placeholder={placeHolder}
+                defaultValue={defaultValue}
+                {...rest}
+            />
             {errorsMsg && (
                 <AnimatePresence>
                     <motion.div

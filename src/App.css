@@ -6,16 +6,16 @@
     font-family: sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
 }
 
-::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 5px;
     scroll-padding: 4px;
 }
 
-::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px slategrey;
 }
 
-::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: orange;
     border-radius: 2px;
     -webkit-border-radius: 2px;

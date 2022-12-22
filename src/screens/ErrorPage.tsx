@@ -1,6 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import BlockIcon from "./components/Icons/Block";
-import { withRouter } from "./HOC/withRouter";
+import BlockIcon from "../components/Icons/Block";
+import { withRouter } from "../HOC/withRouter";
 import { NavigateFunction } from "react-router-dom";
 
 interface Props {

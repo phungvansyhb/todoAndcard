@@ -2,17 +2,17 @@ import { useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import "./App.css";
-import "./App.scss";
-import ArchonIcon from "./components/ArchonIcon";
-import FormAddTodo from "./components/FormAddTodo";
-import AddIcon from "./components/Icons/AddIcon";
-import Modal from "./components/Modal";
-import TodoItem from "./components/TodoItem";
-import { RootState } from "./store/store";
-import { CardAssign, TODOSTATE } from "./typeDef/CardTodo";
+import "App.css";
+import "App.scss";
+import ArchonIcon from "../components/ArchonIcon";
+import FormAddTodo from "../components/FormAddTodo";
+import AddIcon from "../components/Icons/AddIcon";
+import Modal from "../components/Modal";
+import TodoItem from "../components/TodoItem";
+import { RootState } from "../store/store";
+import { CardAssign, TODOSTATE } from "../typeDef/CardTodo";
 
-function App() {
+function TodoApp() {
     const todoList = useSelector((state: RootState) => state.todoSlice.list);
     const [textSearch, setTextSearch] = useState<string>("");
     const [showAddModal, setShowAddModal] = useState<boolean>(false);
@@ -64,4 +64,4 @@ function App() {
     );
 }
 
-export default App;
+export default TodoApp;

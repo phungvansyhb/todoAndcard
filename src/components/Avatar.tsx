@@ -1,18 +1,24 @@
-import React from 'react'
-import { User } from '../typeDef/User'
-import { Tooltip } from 'react-tooltip';
+import React from "react";
+import { User } from "../typeDef/User";
+import { Tooltip } from "react-tooltip";
 
- 
+type T = User & { width?: number; height?: number };
 
-export default function Avatar({avatar , gender , id , name}: User) {
-  return (
-    <div> 
-        <img src={avatar} alt={name} key={id} className='rounded-full' width={24} height={24} id={`avatar-user-${id}`}/>
-        <Tooltip anchorId={`avatar-user-${id}`}>
-            <div className='italic'>
-                {`${name} - ${gender}`}
-            </div>
-        </Tooltip>
-    </div>
-  )
+export default function Avatar({ avatar, gender, id, name, height, width }: T) {
+    return (
+        <div>
+            <img
+                src={avatar}
+                alt={name}
+                key={id}
+                className="rounded-full"
+                width={width || 24}
+                height={height || 24}
+                id={`avatar-user-${id}`}
+            />
+            <Tooltip anchorId={`avatar-user-${id}`}>
+                <div className="italic">{`${name} - ${gender}`}</div>
+            </Tooltip>
+        </div>
+    );
 }

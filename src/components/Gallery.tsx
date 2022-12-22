@@ -16,7 +16,7 @@ type Props<T extends { id: number | string; avatar: string }> = {
 function Gallery<T extends { id: number | string; avatar: string }>(prop: Props<T>) {
     const { list, scrollPosition } = prop;
     return (
-        <div className={`grid grid-cols-4 gap-4 px-8`}>
+        <div className={`grid grid-cols-4 gap-4 px-8 py-4`}>
             {list.map((item, index) => (
                 <LazyLoadComponent
                     children={<Card {...item} avatar={item.avatar} className="col-span-1" />}

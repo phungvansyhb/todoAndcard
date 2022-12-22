@@ -2,26 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-// .tooltip-wrapper .title {
-//     border-right: solid 50px transparent;
-//     border-left: solid 50px transparent;
-//     border-top: solid 50px #e15915;
-//     transform: translateX(-50%);
-//     position: absolute;
-//     z-index: -1;
-//     content: '';
-//     top: 100%;
-//     left: 50%;
-//     height: 0;
-//     width: 0;
-//     -webkit-transform: translateX(-50%);
-//     -moz-transform: translateX(-50%);
-//     -ms-transform: translateX(-50%);
-//     -o-transform: translateX(-50%);
-// }
-
-
 .tooltip-wrapper:hover {
     :first-child {
         display: block;
@@ -31,24 +11,12 @@
 @keyframes slideLeft {
     0% {
         scale: 0;
-        // transform: translateX(50%);
-        // -webkit-transform: translateX(50%);
-        // -moz-transform: translateX(50%);
-        // -ms-transform: translateX(50%);
-        // -o-transform: translateX(50%);
     }
 
     100% {
         scale: 1;
-        // transform: translateX(0);
-        // -webkit-transform: translateX(0);
-        // -moz-transform: translateX(0);
-        // -ms-transform: translateX(0);
-        // -o-transform: translateX(0);
     }
 }
-
-
 
 @layer components {
     span .highlight {
@@ -79,8 +47,19 @@
         @apply bg-gray-600 rounded-lg text-white px-8 py-1 font-bold
     }
 
-    input {
+    input,
+    textarea {
         @apply border rounded-md px-3 py-1 w-full my-2 text-sm
+    }
+
+    label {
+        @apply font-bold mb-2
+    }
+
+    label.required:after {
+        content: ' *';
+        font-weight: 700;
+        color: #CC497F;
     }
 
     select {
@@ -112,8 +91,10 @@
         -moz-border-radius: 4px;
         -ms-border-radius: 4px;
         -o-border-radius: 4px;
-}
+    }
 
-
+    .btn {
+        @apply px-4 py-2 rounded-lg border font-bold
+    }
 
 }
